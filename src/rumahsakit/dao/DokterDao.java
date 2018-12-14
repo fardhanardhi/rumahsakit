@@ -5,14 +5,12 @@
  */
 package rumahsakit.dao;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import rumahsakit.entity.Dokter;
-import rumahsakit.lib.ManajerKoneksi;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 /**
  *
@@ -20,14 +18,14 @@ import java.sql.PreparedStatement;
  */
 public class DokterDao extends AbstractMK {
     
-    public void insert(String nama, int umur, String alamat, int gaji) throws SQLException{
+    public void insert(String nama, int umur, String alamat, int gaji) throws SQLException {
         String sql = "INSERT INTO dokter(nama, umur, alamat, gaji) VALUES";
         
         try{
             Statement st = this.koneksi.createStatement();
             st.executeUpdate(sql + "('"+nama+"', '"+umur+"', '"+alamat+"', '"+gaji+"')");
         }
-        catch(Exception ex){
+        catch(SQLException ex){
             System.out.println("Select Error! error : ");
             System.out.println(ex.getMessage());
         }
@@ -41,7 +39,7 @@ public class DokterDao extends AbstractMK {
             ps.setInt(1, id);
             ps.executeUpdate();
         }
-        catch(Exception ex){
+        catch(SQLException ex){
             System.out.println("Select Error! error : ");
             System.out.println(ex.getMessage());
         }
@@ -59,7 +57,7 @@ public class DokterDao extends AbstractMK {
             ps.setInt(5, dokter.getId());
             ps.executeUpdate();
         }
-        catch(Exception ex){
+        catch(SQLException ex){
             System.out.println("Select Error! error : ");
             System.out.println(ex.getMessage());
         }
@@ -91,7 +89,7 @@ public class DokterDao extends AbstractMK {
             }
             return listDokter;
         }
-        catch(Exception ex){
+        catch(SQLException ex){
             System.out.println("Select Error! error :");
             System.out.println(ex.getMessage());
             return null;

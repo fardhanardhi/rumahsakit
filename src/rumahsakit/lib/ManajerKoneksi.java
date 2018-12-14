@@ -16,7 +16,7 @@ import java.sql.SQLException;
 public class ManajerKoneksi {
     private static final String URL = "jdbc:mysql://localhost:3306/db_rumahsakit?serverTimezone=UTC";
     private static final String USER = "root";
-    private static final String PASSWORD = "admin";
+    private static final String PASSWORD = "";
     
     private static Connection koneksi;
     

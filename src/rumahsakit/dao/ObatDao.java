@@ -5,14 +5,12 @@
  */
 package rumahsakit.dao;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import rumahsakit.entity.Obat;
-import rumahsakit.lib.ManajerKoneksi;
 
 /**
  *
@@ -20,14 +18,14 @@ import rumahsakit.lib.ManajerKoneksi;
  */
 public class ObatDao extends AbstractMK{
     
-    public void insert(String nama, String jenis, int stok, int harga) throws SQLException{
+    public void insert(String nama, String jenis, int stok, int harga){
         String sql = "INSERT INTO obat(nama, jenis, stok, harga) VALUES";
         
         try{
             Statement st = this.koneksi.createStatement();
             st.executeUpdate(sql + "('"+nama+"', '"+jenis+"', '"+stok+"', '"+harga+"')");
         }
-        catch(Exception ex){
+        catch(SQLException ex){
             System.out.println("Select Error! error : ");
             System.out.println(ex.getMessage());
         }
@@ -41,7 +39,7 @@ public class ObatDao extends AbstractMK{
             ps.setInt(1, id);
             ps.executeUpdate();
         }
-        catch(Exception ex){
+        catch(SQLException ex){
             System.out.println("Select Error! error : ");
             System.out.println(ex.getMessage());
         }
@@ -59,7 +57,7 @@ public class ObatDao extends AbstractMK{
             ps.setInt(5, obat.getId());
             ps.executeUpdate();
         }
-        catch(Exception ex){
+        catch(SQLException ex){
             System.out.println("Select Error! error : ");
             System.out.println(ex.getMessage());
         }
@@ -91,7 +89,7 @@ public class ObatDao extends AbstractMK{
             }
             return listObat;
         }
-        catch(Exception ex){
+        catch(SQLException ex){
             System.out.println("Select Error! error :");
             System.out.println(ex.getMessage());
             return null;

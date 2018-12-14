@@ -5,34 +5,34 @@
  */
 package rumahsakit.dao;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import rumahsakit.entity.Pasien;
-import rumahsakit.lib.ManajerKoneksi;
 
 /**
  *
  * @author panjiad
  */
-public class PasienDao extends AbstractMK{
+public class PasienDao extends AbstractMK implements ICrudPasien {
     
-    public void insert(String nama, int umur, String alamat, int id_dokter, int id_penyakit) throws SQLException{
+    @Override
+    public void insert(String nama, int umur, String alamat, int id_dokter, int id_penyakit) {
         String sql = "INSERT INTO pasien(nama, umur, alamat, id_dokter, id_penyakit) VALUES";
         
         try{
             Statement st = this.koneksi.createStatement();
             st.executeUpdate(sql + "('"+nama+"', '"+umur+"', '"+alamat+"', '"+id_dokter+"', '"+id_penyakit+"')");
         }
-        catch(Exception ex){
+        catch(SQLException ex){
             System.out.println("Select Error! error : ");
             System.out.println(ex.getMessage());
         }
     }
     
+    @Override
     public void delete(int id){
         String query = "DELETE FROM pasien WHERE id = ?";
         
@@ -41,12 +41,13 @@ public class PasienDao extends AbstractMK{
             ps.setInt(1, id);
             ps.executeUpdate();
         }
-        catch(Exception ex){
+        catch(SQLException ex){
             System.out.println("Select Error! error : ");
             System.out.println(ex.getMessage());
         }
     }
     
+    @Override
     public void update(Pasien pasien){
         String query = "UPDATE pasien SET nama = ?, umur = ?, alamat = ? WHERE id = ?";
         
@@ -58,18 +59,20 @@ public class PasienDao extends AbstractMK{
             ps.setInt(4, pasien.getId());
             ps.executeUpdate();
         }
-        catch(Exception ex){
+        catch(SQLException ex){
             System.out.println("Select Error! error : ");
             System.out.println(ex.getMessage());
         }
     }
     
+    @Override
     public ArrayList<Pasien> ambilSemuaData(){
         ArrayList<Pasien> semuanya=this.selectWhere(null);
         return semuanya;
     }
     
-    private ArrayList<Pasien> selectWhere(String where){
+    @Override
+    public ArrayList<Pasien> selectWhere(String where){
         String sql = "SELECT * FROM pasien";
         if(where!=null){
             sql+=(" "+where);
@@ -89,7 +92,7 @@ public class PasienDao extends AbstractMK{
             }
             return listPasien;
         }
-        catch(Exception ex){
+        catch(SQLException ex){
             System.out.println("Select Error! error :");
             System.out.println(ex.getMessage());
             return null;
