@@ -11,7 +11,7 @@ package rumahsakit.entity;
  */
 public class Dokter {
 
-    private int id;
+    private Integer id;
     private String nama;
     private Integer umur;
     private String alamat;
@@ -21,7 +21,7 @@ public class Dokter {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
     
