@@ -6,6 +6,7 @@
 package rumahsakit.dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -17,12 +18,7 @@ import rumahsakit.lib.ManajerKoneksi;
  *
  * @author panjiad
  */
-public class PenyakitDao {
-    private final Connection koneksi;
-    
-    public PenyakitDao(){
-        this.koneksi = ManajerKoneksi.getKoneksi();    
-    }
+public class PenyakitDao extends AbstractMK{
     
     public void insert(String nama, String status, int id_obat) throws SQLException{
         String sql = "INSERT INTO penyakit(nama, status, id_obat) VALUES";
@@ -30,6 +26,36 @@ public class PenyakitDao {
         try{
             Statement st = this.koneksi.createStatement();
             st.executeUpdate(sql + "('"+nama+"', '"+status+"', '"+id_obat+"')");
+        }
+        catch(Exception ex){
+            System.out.println("Select Error! error : ");
+            System.out.println(ex.getMessage());
+        }
+    }
+    
+    public void delete(int id){
+        String query = "DELETE FROM penyakit WHERE id = ?";
+        
+        try{
+            PreparedStatement ps = this.koneksi.prepareStatement(query);
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        }
+        catch(Exception ex){
+            System.out.println("Select Error! error : ");
+            System.out.println(ex.getMessage());
+        }
+    }
+    
+    public void update(Penyakit penyakit){
+        String query = "UPDATE penyakit SET nama = ?, alamat = ? WHERE id = ?";
+        
+        try{
+            PreparedStatement ps = this.koneksi.prepareStatement(query);
+            ps.setString(1, penyakit.getNama());
+            ps.setString(2, penyakit.getStatus());
+            ps.setInt(3, penyakit.getId());
+            ps.executeUpdate();
         }
         catch(Exception ex){
             System.out.println("Select Error! error : ");

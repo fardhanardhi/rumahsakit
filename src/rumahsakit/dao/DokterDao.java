@@ -12,17 +12,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import rumahsakit.entity.Dokter;
 import rumahsakit.lib.ManajerKoneksi;
+import java.sql.PreparedStatement;
 
 /**
  *
  * @author panjiad
  */
-public class DokterDao {
-    private final Connection koneksi;
-    
-    public DokterDao(){
-        this.koneksi = ManajerKoneksi.getKoneksi();    
-    }
+public class DokterDao extends AbstractMK {
     
     public void insert(String nama, int umur, String alamat, int gaji) throws SQLException{
         String sql = "INSERT INTO dokter(nama, umur, alamat, gaji) VALUES";
@@ -30,6 +26,38 @@ public class DokterDao {
         try{
             Statement st = this.koneksi.createStatement();
             st.executeUpdate(sql + "('"+nama+"', '"+umur+"', '"+alamat+"', '"+gaji+"')");
+        }
+        catch(Exception ex){
+            System.out.println("Select Error! error : ");
+            System.out.println(ex.getMessage());
+        }
+    }
+    
+    public void delete(int id){
+        String query = "DELETE FROM dokter WHERE id = ?";
+        
+        try{
+            PreparedStatement ps = this.koneksi.prepareStatement(query);
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        }
+        catch(Exception ex){
+            System.out.println("Select Error! error : ");
+            System.out.println(ex.getMessage());
+        }
+    }
+    
+    public void update(Dokter dokter){
+        String query = "UPDATE dokter SET nama = ?, umur = ?, alamat = ?, gaji = ? WHERE id = ?";
+        
+        try{
+            PreparedStatement ps = this.koneksi.prepareStatement(query);
+            ps.setString(1, dokter.getNama());
+            ps.setInt(2, dokter.getUmur());
+            ps.setString(3, dokter.getAlamat());
+            ps.setInt(4, dokter.getGaji());
+            ps.setInt(5, dokter.getId());
+            ps.executeUpdate();
         }
         catch(Exception ex){
             System.out.println("Select Error! error : ");

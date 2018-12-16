@@ -6,6 +6,7 @@
 package rumahsakit.dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -17,12 +18,7 @@ import rumahsakit.lib.ManajerKoneksi;
  *
  * @author panjiad
  */
-public class PasienDao {
-    private final Connection koneksi;
-    
-    public PasienDao(){
-        this.koneksi = ManajerKoneksi.getKoneksi();    
-    }
+public class PasienDao extends AbstractMK{
     
     public void insert(String nama, int umur, String alamat, int id_dokter, int id_penyakit) throws SQLException{
         String sql = "INSERT INTO pasien(nama, umur, alamat, id_dokter, id_penyakit) VALUES";
@@ -30,6 +26,37 @@ public class PasienDao {
         try{
             Statement st = this.koneksi.createStatement();
             st.executeUpdate(sql + "('"+nama+"', '"+umur+"', '"+alamat+"', '"+id_dokter+"', '"+id_penyakit+"')");
+        }
+        catch(Exception ex){
+            System.out.println("Select Error! error : ");
+            System.out.println(ex.getMessage());
+        }
+    }
+    
+    public void delete(int id){
+        String query = "DELETE FROM pasien WHERE id = ?";
+        
+        try{
+            PreparedStatement ps = this.koneksi.prepareStatement(query);
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        }
+        catch(Exception ex){
+            System.out.println("Select Error! error : ");
+            System.out.println(ex.getMessage());
+        }
+    }
+    
+    public void update(Pasien pasien){
+        String query = "UPDATE pasien SET nama = ?, umur = ?, alamat = ? WHERE id = ?";
+        
+        try{
+            PreparedStatement ps = this.koneksi.prepareStatement(query);
+            ps.setString(1, pasien.getNama());
+            ps.setInt(2, pasien.getUmur());
+            ps.setString(3, pasien.getAlamat());
+            ps.setInt(4, pasien.getId());
+            ps.executeUpdate();
         }
         catch(Exception ex){
             System.out.println("Select Error! error : ");

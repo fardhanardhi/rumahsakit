@@ -10,9 +10,19 @@ package rumahsakit.entity;
  * @author panjiad
  */
 public class Penyakit {
+    
+    private Integer id;
     private String nama;
     private String status;
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+    
     public String getNama() {
         return nama;
     }

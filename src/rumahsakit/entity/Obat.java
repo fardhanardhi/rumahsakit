@@ -10,11 +10,21 @@ package rumahsakit.entity;
  * @author panjiad
  */
 public class Obat {
+    
+    private Integer id;
     private String nama;
     private String jenis;
     private Integer stok;
     private Integer harga;
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+    
     public String getNama() {
         return nama;
     }

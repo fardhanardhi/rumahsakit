@@ -10,11 +10,21 @@ package rumahsakit.entity;
  * @author panjiad
  */
 public class Dokter {
+
+    private int id;
     private String nama;
     private Integer umur;
     private String alamat;
     private Integer gaji;
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
     public String getNama() {
         return nama;
     }
