@@ -13,7 +13,7 @@ import rumahsakit.entity.Transaksi;
  * @author adan
  */
 public interface ICrudTransaksi {
-    public abstract void insert(String tanggal, int total, int id_pasien);
+    public abstract void insert(Transaksi transaksi);
     public abstract void delete(int id);
     public abstract void update(Transaksi transaksi);
     public abstract ArrayList<Transaksi> ambilSemuaData();

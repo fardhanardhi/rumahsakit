@@ -16,37 +16,48 @@ import rumahsakit.entity.Obat;
  *
  * @author panjiad
  */
-public class ObatDao extends AbstractMK{
+public class ObatDao extends AbstractMK implements ICrudObat{
     
-    public void insert(String nama, String jenis, int stok, int harga){
-        String sql = "INSERT INTO obat(nama, jenis, stok, harga) VALUES";
+    public ObatDao(){
+        super();
+    }
+    
+    @Override
+    public void insert(Obat obat){
+        String nama=obat.getNama();
+        String jenis=obat.getJenis();
+        Integer stok=obat.getStok();
+        Integer harga=obat.getHarga();
+        
+        String sql = "INSERT INTO tb_obat(nama_obat, jenis_obat, stok, harga)"+"VALUES ('"+nama+"','"+jenis+"','"+stok+"','"+harga+"');";
         
         try{
             Statement st = this.koneksi.createStatement();
-            st.executeUpdate(sql + "('"+nama+"', '"+jenis+"', '"+stok+"', '"+harga+"')");
+            st.executeUpdate(sql);
         }
         catch(SQLException ex){
-            System.out.println("Select Error! error : ");
+            System.out.println("Eksekusi SQL gagal! Errornya : ");
             System.out.println(ex.getMessage());
         }
     }
     
+    @Override
     public void delete(int id){
-        String query = "DELETE FROM obat WHERE id = ?";
+        String query = "DELETE * FROM tb_obat WHERE id_obat = '"+id+"'";
         
         try{
-            PreparedStatement ps = this.koneksi.prepareStatement(query);
-            ps.setInt(1, id);
-            ps.executeUpdate();
+            Statement ps = this.koneksi.createStatement();
+            ps.executeUpdate(query);
         }
         catch(SQLException ex){
-            System.out.println("Select Error! error : ");
+            System.out.println("Eksekusi SQL gagal! Errornya : ");
             System.out.println(ex.getMessage());
         }
     }
     
+    @Override
     public void update(Obat obat){
-        String query = "UPDATE obat SET nama = ?, jenis = ?, stok = ?, harga = ? WHERE id = ?";
+        String query = "UPDATE tb_obat SET nama_obat = ?, jenis_obat = ?, stok = ?, harga = ? WHERE id_obat = ?";
         
         try{
             PreparedStatement ps = this.koneksi.prepareStatement(query);
@@ -55,7 +66,7 @@ public class ObatDao extends AbstractMK{
             ps.setInt(3, obat.getStok());
             ps.setInt(4, obat.getHarga());
             ps.setInt(5, obat.getId());
-            ps.executeUpdate();
+            ps.executeUpdate(query);
         }
         catch(SQLException ex){
             System.out.println("Select Error! error : ");
@@ -63,13 +74,15 @@ public class ObatDao extends AbstractMK{
         }
     }
     
+    @Override
     public ArrayList<Obat> ambilSemuaData(){
         ArrayList<Obat> semuanya=this.selectWhere(null);
         return semuanya;
     }
     
-    private ArrayList<Obat> selectWhere(String where){
-        String sql = "SELECT * FROM obat";
+    @Override
+    public ArrayList<Obat> selectWhere(String where){
+        String sql = "SELECT * FROM tb_obat";
         if(where!=null){
             sql+=(" "+where);
         }
@@ -80,8 +93,9 @@ public class ObatDao extends AbstractMK{
             
             while(hasil.next()){
                 Obat o= new Obat();
-                o.setNama(hasil.getString("nama"));
-                o.setJenis(hasil.getString("jenis"));
+                o.setId(hasil.getInt("id_obat"));
+                o.setNama(hasil.getString("nama_obat"));
+                o.setJenis(hasil.getString("jenis_obat"));
                 o.setStok(hasil.getInt("stok"));
                 o.setHarga(hasil.getInt("harga"));
                 

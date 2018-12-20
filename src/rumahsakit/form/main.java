@@ -12,5 +12,7 @@ package rumahsakit.form;
 public class main {
     public static void main(String[] args) {
         jos s=new jos();
+        FormUtama fu=new FormUtama();
+        fu.setVisible(true);
     }
 }

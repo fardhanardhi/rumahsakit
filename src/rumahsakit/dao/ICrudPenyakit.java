@@ -13,7 +13,7 @@ import rumahsakit.entity.Penyakit;
  * @author adan
  */
 public interface ICrudPenyakit {
-    public abstract void insert(String nama, String status, int id_obat);
+    public abstract void insert(Penyakit penyakit);
     public abstract void delete(int id);
     public abstract void update(Penyakit penyakit);
     public abstract ArrayList<Penyakit> ambilSemuaData();

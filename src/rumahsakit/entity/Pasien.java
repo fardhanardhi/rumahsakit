@@ -15,6 +15,24 @@ public class Pasien {
     private String nama;
     private Integer umur;
     private String alamat;
+    private Integer id_dokter;
+    private Integer id_penyakit;
+
+    public Integer getId_dokter() {
+        return id_dokter;
+    }
+
+    public void setId_dokter(Integer id_dokter) {
+        this.id_dokter = id_dokter;
+    }
+
+    public Integer getId_penyakit() {
+        return id_penyakit;
+    }
+
+    public void setId_penyakit(Integer id_penyakit) {
+        this.id_penyakit = id_penyakit;
+    }
 
     public Integer getId() {
         return id;

@@ -18,58 +18,71 @@ import rumahsakit.lib.ManajerKoneksi;
  *
  * @author panjiad
  */
-public class PenyakitDao extends AbstractMK{
+public class PenyakitDao extends AbstractMK implements ICrudPenyakit{
     
-    public void insert(String nama, String status, int id_obat) throws SQLException{
-        String sql = "INSERT INTO penyakit(nama, status, id_obat) VALUES";
+    public PenyakitDao(){
+        super();
+    }
+    
+    @Override
+    public void insert(Penyakit penyakit){
+        String nama=penyakit.getNama();
+        String status=penyakit.getStatus();
+        Integer id_obat=penyakit.getId_obat();
+        
+        String sql = "INSERT INTO tb_penyakit(nama, status, id_obat)"+"VALUES ('"+nama+"','"+status+"','"+id_obat+"');";
         
         try{
             Statement st = this.koneksi.createStatement();
-            st.executeUpdate(sql + "('"+nama+"', '"+status+"', '"+id_obat+"')");
+            st.executeUpdate(sql);
         }
         catch(Exception ex){
-            System.out.println("Select Error! error : ");
+            System.out.println("Eksekusi SQL gagal! Errornya : ");
             System.out.println(ex.getMessage());
         }
     }
     
+    @Override
     public void delete(int id){
-        String query = "DELETE FROM penyakit WHERE id = ?";
+        String query = "DELETE * FROM tb_penyakit WHERE id_penyakit = '"+id+"'";
         
         try{
-            PreparedStatement ps = this.koneksi.prepareStatement(query);
-            ps.setInt(1, id);
-            ps.executeUpdate();
+            Statement ps = this.koneksi.createStatement();
+            ps.executeUpdate(query);
         }
         catch(Exception ex){
-            System.out.println("Select Error! error : ");
+            System.out.println("Eksekusi SQL gagal! Errornya : ");
             System.out.println(ex.getMessage());
         }
     }
     
+    @Override
     public void update(Penyakit penyakit){
-        String query = "UPDATE penyakit SET nama = ?, alamat = ? WHERE id = ?";
+        String query = "UPDATE tb_penyakit SET nama = ?, status = ?, id_obat = ? WHERE id_penyakit = ?";
         
         try{
             PreparedStatement ps = this.koneksi.prepareStatement(query);
             ps.setString(1, penyakit.getNama());
             ps.setString(2, penyakit.getStatus());
-            ps.setInt(3, penyakit.getId());
-            ps.executeUpdate();
+            ps.setInt(3, penyakit.getId_obat());
+            ps.setInt(4, penyakit.getId());
+            ps.executeUpdate(query);
         }
         catch(Exception ex){
-            System.out.println("Select Error! error : ");
+            System.out.println("Eksekusi SQL gagal! Errornya : ");
             System.out.println(ex.getMessage());
         }
     }
     
+    @Override
     public ArrayList<Penyakit> ambilSemuaData(){
         ArrayList<Penyakit> semuanya=this.selectWhere(null);
         return semuanya;
     }
     
-    private ArrayList<Penyakit> selectWhere(String where){
-        String sql = "SELECT * FROM penyakit";
+    @Override
+    public ArrayList<Penyakit> selectWhere(String where){
+        String sql = "SELECT * FROM tb_penyakit";
         if(where!=null){
             sql+=(" "+where);
         }
@@ -80,15 +93,17 @@ public class PenyakitDao extends AbstractMK{
             
             while(hasil.next()){
                 Penyakit pe= new Penyakit();
+                pe.setId(hasil.getInt("id_penyakit"));
                 pe.setNama(hasil.getString("nama"));
                 pe.setStatus(hasil.getString("status"));
+                pe.setId_obat(hasil.getInt("id_obat"));
                 
                 listPenyakit.add(pe);
             }
             return listPenyakit;
         }
         catch(Exception ex){
-            System.out.println("Select Error! error :");
+            System.out.println("Eksekusi SQL gagal! Errornya : ");
             System.out.println(ex.getMessage());
             return null;
         }

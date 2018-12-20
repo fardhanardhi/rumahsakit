@@ -14,6 +14,15 @@ public class Penyakit {
     private Integer id;
     private String nama;
     private String status;
+    private Integer id_obat;
+
+    public Integer getId_obat() {
+        return id_obat;
+    }
+
+    public void setId_obat(Integer id_obat) {
+        this.id_obat = id_obat;
+    }
 
     public Integer getId() {
         return id;
